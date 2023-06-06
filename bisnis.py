@@ -24,7 +24,7 @@ with st.container():
     with st.sidebar:
         selected = st.selectbox(
             'Menu',
-            ['Oke' 'Implementation'],
+            ['Oke', 'Implementation'],
             index=0
         )
 
