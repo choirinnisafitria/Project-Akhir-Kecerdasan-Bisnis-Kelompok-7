@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from sklearn.preprocessing import MinMaxScaler, OneHotEncoder
+from sklearn.preprocessing import MinMaxScaler, OneHotEncoder, LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from sklearn.naive_bayes import GaussianNB
@@ -44,9 +44,13 @@ with st.container():
         feature_names = encoder.get_feature_names_out(input_features=X.columns)
         scaled_features = pd.DataFrame(X_encoded, columns=feature_names)
 
+        # Label encoding pada target variable
+        label_encoder = LabelEncoder()
+        y_encoded = label_encoder.fit_transform(y)
+
         # Split Data
         training, test, training_label, test_label = train_test_split(
-            scaled_features, y, test_size=0.2, random_state=1)
+            scaled_features, y_encoded, test_size=0.2, random_state=1)
 
         # Gaussian Naive Bayes
         gaussian = GaussianNB()
