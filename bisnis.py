@@ -52,7 +52,7 @@ with st.container():
         gaussian.fit(training, training_label)
         probas = gaussian.predict_proba(test)
         probas = probas[:, 1]
-        probas = probas.round()
+        probas = probas.round().astype(int)
 
         st.subheader("Implementasi Prediksi Penyakit Diabetes")
         nama = st.text_input('Masukkan nama:')
