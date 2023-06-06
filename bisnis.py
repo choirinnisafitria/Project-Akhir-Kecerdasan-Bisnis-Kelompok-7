@@ -1,4 +1,115 @@
 import streamlit as st
+import pandas as pd
+import numpy as np
+from sklearn.preprocessing import MinMaxScaler, LabelEncoder
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+from sklearn.naive_bayes import GaussianNB
+
+st.set_page_config(
+    page_title="Klasifikasi Penerima PIP dan KIP",
+    page_icon='blood.png',
+    layout='centered',
+    initial_sidebar_state="expanded",
+    menu_items={
+        'Get Help': 'https://www.extremelycoolapp.com/help',
+        'Report a bug': "https://www.extremelycoolapp.com/bug",
+        'About': "# This is a header. This is an *extremely* cool app!"
+    }
+)
+
+st.write("""<h1>Aplikasi Klasifikasi Penerima PIP dan KIP</h1>""", unsafe_allow_html=True)
+
+with st.container():
+    with st.sidebar:
+        selected = st.selectbox(
+            'Menu',
+            ['Preprocessing', 'Modeling', 'Implementation'],
+            index=0
+        )
+
+    if selected == 'Preprocessing':
+        st.subheader('Normalisasi Data')
+        df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/dataset_pip_kip.csv')
+        
+        st.subheader('Data Asli')
+        st.dataframe(df, width=600)
+
+        X = df.drop(columns=['label'])
+        y = df['label'].values
+
+        scaler = MinMaxScaler()
+        scaled_X = scaler.fit_transform(X)
+        scaled_df = pd.DataFrame(scaled_X, columns=X.columns)
+
+        st.subheader('Data Setelah Normalisasi')
+        st.dataframe(scaled_df, width=600)
+
+    elif selected == 'Modeling':
+        df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/dataset_pip_kip.csv')
+
+        X = df.drop(columns=['label'])
+        y = df['label'].values
+
+        scaler = MinMaxScaler()
+        scaled_X = scaler.fit_transform(X)
+        scaled_df = pd.DataFrame(scaled_X, columns=X.columns)
+
+        X_train, X_test, y_train, y_test = train_test_split(scaled_df, y, test_size=0.2, random_state=1)
+
+        gaussian = GaussianNB()
+        gaussian.fit(X_train, y_train)
+        y_pred = gaussian.predict(X_test)
+        accuracy = accuracy_score(y_test, y_pred)
+
+        st.subheader('Hasil Modeling dengan Naive Bayes')
+        st.write('Akurasi: {:.2f}%'.format(accuracy * 100))
+
+    elif selected == 'Implementation':
+        st.subheader('Implementasi Prediksi Penerima PIP dan KIP')
+        df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/dataset_pip_kip.csv')
+
+        X = df.drop(columns=['label'])
+        y = df['label'].values
+        # Encoding label teks menjadi numerik
+        label_encoder = LabelEncoder()
+        y = label_encoder.fit_transform(y)
+
+        scaler = MinMaxScaler()
+        scaled_X = scaler.fit_transform(X)
+        scaled_df = pd.DataFrame(scaled_X, columns=X.columns)
+
+        X_train, X_test, y_train, y_test = train_test_split(scaled_df, y, test_size=0.2, random_state=1)
+
+        gaussian = GaussianNB()
+        gaussian.fit(X_train, y_train)
+
+        st.subheader('Implementasi Prediksi Penerima PIP dan KIP')
+
+        nama = st.number_input('Masukkan nama:')
+        jenis_tinggal = st.number_input('Masukkan jenis tinggal:')
+        jenjang_pendidikan_ortu_wali = st.number_input('Masukkan jenjang pendidikan ortu atau wali:')
+        pekerjaan_ortu_wali = st.number_input('Masukkan pekerjaan ortu atau wali:')
+        penghasilan_ortu_wali = st.number_input('Masukkan penghasilan ortu atau wali:')
+
+        input_data = np.array([
+            nama,
+            jenis_tinggal,
+            jenjang_pendidikan_ortu_wali,
+            pekerjaan_ortu_wali,
+            penghasilan_ortu_wali
+        ]).reshape(1, -1)
+
+        input_data_scaled = scaler.transform(input_data)
+
+        prediction = gaussian.predict(input_data_scaled)
+
+        # Menerjemahkan kembali label numerik menjadi label teks
+        predicted_label = label_encoder.inverse_transform(prediction)
+
+        st.subheader('Hasil Prediksi')
+        st.write('Klasifikasi:', predicted_label[0])
+import streamlit as st
 import plotly.express as px
 from streamlit_option_menu import option_menu
 import pandas as pd
@@ -120,8 +231,8 @@ with st.container():
         - max = nilai maksimum semua data asli
         """)
         #Mendefinisikan Varible X dan Y
-        X = df.drop(columns=['Label'])
-        y = df['Label'].values
+        X = df.drop(columns=['Status'])
+        y = df['Status'].values
         df_min = X.min()
         df_max = X.max()
         
@@ -138,7 +249,7 @@ with st.container():
         st.dataframe(scaled_features, width=600)
 
         st.subheader('Target Label')
-        dumies = pd.get_dummies(df.Label).columns.values.tolist()
+        dumies = pd.get_dummies(df.Status).columns.values.tolist()
         dumies = np.array(dumies)
 
         labels = pd.DataFrame({
@@ -154,8 +265,8 @@ with st.container():
 
         #Preprocessing data
         #Mendefinisikan Varible X dan Y
-        X = df.drop(columns=['Label'])
-        y = df['Label'].values
+        X = df.drop(columns=['Status'])
+        y = df['Status'].values
         
         #NORMALISASI NILAI X
         scaler = MinMaxScaler()
@@ -234,8 +345,8 @@ with st.container():
 
             #Preprocessing data
             #Mendefinisikan Varible X dan Y
-            X = df.drop(columns=['Label'])
-            y = df['Label'].values
+            X = df.drop(columns=['Status'])
+            y = df['Status'].values
             
             #NORMALISASI NILAI X
             scaler = MinMaxScaler()
