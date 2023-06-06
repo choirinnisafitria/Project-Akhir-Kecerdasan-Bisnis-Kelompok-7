@@ -127,8 +127,8 @@ with st.container():
                 st.success('KIP')
 
     elif selected == "Tentang Kami":
-        st.write("##### Mata Kuliah = Pemrosesan Bahasa Alami -A") 
-        st.write('##### Kelompok 5')
+        st.write("##### Mata Kuliah = Kecerdasan Bisnis -A") 
+        st.write('##### Kelompok 7')
         st.write("1. Hambali Fitrianto - 200411100074")
         st.write("2. Firdatul Fitriyah - 200411100020")
         st.write("3. Choirinnisa’ Fitria - 200411100149")
