@@ -31,7 +31,7 @@ with st.container():
     if selected == "Implementation":
         # Read Dataset
         df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/dataset.csv')
-        st.write('df')
+        st.write(df)
 
         # Preprocessing data
         # Mendefinisikan Variable X dan Y
