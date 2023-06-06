@@ -1,3 +1,4 @@
+from streamlit_option_menu import option_menu
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -5,10 +6,13 @@ from sklearn.preprocessing import MinMaxScaler, OneHotEncoder, LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from sklearn.naive_bayes import GaussianNB
+import warnings
+warnings.filterwarnings('ignore')
+
 
 st.set_page_config(
-    page_title="Klasifikasi Penerima PIP dan KIP",
-    page_icon='blood.png',
+    page_title="Klasifikasi",
+    page_icon='https://cdn-icons-png.flaticon.com/512/1998/1998664.png',
     layout='centered',
     initial_sidebar_state="expanded",
     menu_items={
@@ -17,18 +21,42 @@ st.set_page_config(
         'About': "# This is a header. This is an *extremely* cool app!"
     }
 )
-
-st.write("""<h1>Aplikasi Klasifikasi Penerima PIP dan KIP</h1>""", unsafe_allow_html=True)
+st.write("""
+<center><h2 style = "text-align: justify;">ANALISIS SENTIMEN PADA WISATA DIENG DENGAN ALGORITMA K-NEAREST NEIGHBOR (K-NN)</h2></center>
+""",unsafe_allow_html=True)
+st.write("### Dosen Pengampu : Dr. FIKA HASTARITA RACHMAN, ST., M.Eng",unsafe_allow_html=True)
 
 with st.container():
     with st.sidebar:
-        selected = st.selectbox(
-            'Menu',
-            ['Implementation'],
-            index=0
+        selected = option_menu(
+        st.write("""<h3 style = "text-align: center;"><img src="https://cdn-icons-png.flaticon.com/512/1998/1998664.png" width="120" height="120"></h3>""",unsafe_allow_html=True), 
+        ["Home","Dataset", "Implementation", "Tentang Kami"], 
+            icons=['house', 'bar-chart','check2-square', 'person'], menu_icon="cast", default_index=0,
+            styles={
+                "container": {"padding": "0!important", "background-color": "#412a7a"},
+                "icon": {"color": "white", "font-size": "18px"}, 
+                "nav-link": {"font-size": "16px", "text-align": "left", "margin":"0px", "color":"white"},
+                "nav-link-selected":{"background-color": "#412a7a"}
+            }
         )
 
-    if selected == "Implementation":
+    if selected == "Home":
+        st.write("""<h3 style = "text-align: center;">
+        <img src="https://tse2.mm.bing.net/th?id=OIP.STTKkkt17TKUvsAE4wKHCwHaED&pid=Api&P=0&h=180" width="500" height="300">
+        </h3>""",unsafe_allow_html=True)
+
+    elif selected == "Dataset":
+        st.write("#### Deskripsi Dataset")
+        st.write(""" <p style = "text-align: justify;">dataset tentang ulasan terhadap wisata dieng dari website tripadvisor. Selanjutnya data ulasan tersebut akan diklasifikasikan ke dalam dua kategori sentimen yaitu negatif dan positif kemudian dilakukan penerapan algoritma k-nearest neighbor (K-NN) untuk mengetahui nilai akurasinya.</p>""",unsafe_allow_html=True)
+        st.write("#### Preprocessing Dataset")
+        st.write(""" <p style = "text-align: justify;">Preprocessing data merupakan proses dalam mengganti teks tidak teratur supaya teratur yang nantinya dapat membantu pada proses pengolahan data.</p>""",unsafe_allow_html=True)
+        
+        st.write("#### Dataset")
+        # Read Dataset
+        df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/datasetpipkip.csv')
+        st.write(df)
+
+    elif selected == "Implementation":
         # Read Dataset
         df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/datasetpipkip.csv')
         st.write(df)
@@ -97,3 +125,11 @@ with st.container():
                 st.error('PIP')
             else:
                 st.success('KIP')
+
+    elif selected == "Tentang Kami":
+        st.write("##### Mata Kuliah = Pemrosesan Bahasa Alami -A") 
+        st.write('##### Kelompok 5')
+        st.write("1. Hambali Fitrianto - 200411100074")
+        st.write("2. Firdatul Fitriyah - 200411100020")
+        st.write("3. Choirinnisa’ Fitria - 200411100149")
+        
