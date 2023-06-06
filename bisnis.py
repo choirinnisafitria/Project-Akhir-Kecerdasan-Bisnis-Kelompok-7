@@ -105,14 +105,14 @@ with st.container():
 
     elif selected == "Dataset":
         st.subheader("""Dataset Anemia""")
-        df = pd.read_csv('https://raw.githubusercontent.com/HanifSantoso05/dataset_matkul/main/anemia.csv')
+        df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/dataset_pip_kip.csv')
         st.dataframe(df, width=600)
 
     elif selected == "Prepocessing":
         st.subheader("""Normalisasi Data""")
         st.write("""Rumus Normalisasi Data :""")
         st.image('https://i.stack.imgur.com/EuitP.png', use_column_width=False, width=250)
-        df = pd.read_csv('https://raw.githubusercontent.com/HanifSantoso05/dataset_matkul/main/anemia.csv')
+        df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/dataset_pip_kip.csv')
         st.markdown("""
         Dimana :
         - X = data yang akan dinormalisasi atau data asli
@@ -120,8 +120,8 @@ with st.container():
         - max = nilai maksimum semua data asli
         """)
         #Mendefinisikan Varible X dan Y
-        X = df.drop(columns=['Result'])
-        y = df['Result'].values
+        X = df.drop(columns=['Label'])
+        y = df['Label'].values
         df_min = X.min()
         df_max = X.max()
         
@@ -138,7 +138,7 @@ with st.container():
         st.dataframe(scaled_features, width=600)
 
         st.subheader('Target Label')
-        dumies = pd.get_dummies(df.Result).columns.values.tolist()
+        dumies = pd.get_dummies(df.Label).columns.values.tolist()
         dumies = np.array(dumies)
 
         labels = pd.DataFrame({
@@ -150,12 +150,12 @@ with st.container():
 
     elif selected == "Modeling":
         #Read Dataset
-        df = pd.read_csv('https://raw.githubusercontent.com/HanifSantoso05/dataset_matkul/main/anemia.csv')
+        df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/dataset_pip_kip.csv')
 
         #Preprocessing data
         #Mendefinisikan Varible X dan Y
-        X = df.drop(columns=['Result'])
-        y = df['Result'].values
+        X = df.drop(columns=['Label'])
+        y = df['Label'].values
         
         #NORMALISASI NILAI X
         scaler = MinMaxScaler()
@@ -230,12 +230,12 @@ with st.container():
     elif selected == "Implementation":
         with st.form("Implementation"):
             #Read Dataset
-            df = pd.read_csv('https://raw.githubusercontent.com/HanifSantoso05/dataset_matkul/main/anemia.csv')
+            df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/dataset_pip_kip.csv')
 
             #Preprocessing data
             #Mendefinisikan Varible X dan Y
-            X = df.drop(columns=['Result'])
-            y = df['Result'].values
+            X = df.drop(columns=['Label'])
+            y = df['Label'].values
             
             #NORMALISASI NILAI X
             scaler = MinMaxScaler()
