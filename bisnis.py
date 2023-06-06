@@ -86,7 +86,7 @@ with st.container():
         
         if len(test_label) > 0:
             test_label = test_label
-            akurasi = round(100 * accuracy_score(test_label, probas.round().astype(int)))
+            akurasi = round(100 * accuracy_score(test_label.astype(int), probas.round().astype(int)))
             st.write('Akurasi: {0:0.0f}'.format(akurasi), '%')
 
 
