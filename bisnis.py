@@ -35,7 +35,7 @@ with st.container():
 
         # Preprocessing data
         # Mendefinisikan Variable X dan Y
-        X = df[['Nama', 'Jenis_Tinggal', 'Jenis_Pendidikan_Ortu_Wali', 'Pekerjaan_Ortu_Wali', 'Penghasilan_Ortu_Wali']]
+        X = df[['Jenis_Tinggal', 'Jenis_Pendidikan_Ortu_Wali', 'Pekerjaan_Ortu_Wali', 'Penghasilan_Ortu_Wali']]
         y = df['Status'].values
 
         # One-hot encoding pada atribut kategorikal
@@ -60,7 +60,6 @@ with st.container():
         probas = probas.round().astype(int)
 
         st.subheader("Implementasi Prediksi Penyakit Diabetes")
-        nama = st.text_input('Masukkan nama:')
         jenis_tinggal = st.text_input('Masukkan jenis tinggal:')
         jenis_pendidikan_ortu_wali = st.text_input('Masukkan jenis pendidikan ortu atau wali:')
         pekerjaan_ortu_wali = st.text_input('Masukkan pekerjaan ortu atau wali:')
@@ -69,7 +68,6 @@ with st.container():
 
         if st.button('Submit'):
             inputs = np.array([
-                nama,
                 jenis_tinggal,
                 jenis_pendidikan_ortu_wali,
                 pekerjaan_ortu_wali,
