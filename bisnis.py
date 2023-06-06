@@ -31,7 +31,7 @@ with st.container():
     if selected == 'Preprocessing':
         st.subheader('Normalisasi Data')
         df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/dataset.csv')
-        
+
         st.subheader('Data Asli')
         st.dataframe(df, width=600)
 
@@ -39,28 +39,8 @@ with st.container():
         y = df['Status'].values
 
         scaler = MinMaxScaler()
-        scaled_X = scaler.fit_transform(X)
+        scaled_X = scaler.fit_transform(X.values)  # Convert DataFrame to NumPy array
         scaled_df = pd.DataFrame(scaled_X, columns=X.columns)
 
         st.subheader('Data Setelah Normalisasi')
         st.dataframe(scaled_df, width=600)
-
-    elif selected == 'Modeling':
-        df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/dataset.csv')
-
-        X = df.drop(columns=['Status'])
-        y = df['Status'].values
-
-        scaler = MinMaxScaler()
-        scaled_X = scaler.fit_transform(X)
-        scaled_df = pd.DataFrame(scaled_X, columns=X.columns)
-
-        X_train, X_test, y_train, y_test = train_test_split(scaled_df, y, test_size=0.2, random_state=1)
-
-        gaussian = GaussianNB()
-        gaussian.fit(X_train, y_train)
-        y_pred = gaussian.predict(X_test)
-        accuracy = accuracy_score(y_test, y_pred)
-
-        st.subheader('Hasil Modeling dengan Naive Bayes')
-        st.write('Akurasi: {:.2f}%'.format(accuracy * 100))
