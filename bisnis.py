@@ -72,12 +72,10 @@ with st.container():
         X = df.drop(columns=['Status'])
         y = df['Status'].values
 
-        # Encoding label teks menjadi numerik
-        label_encoder = LabelEncoder()
-        y = label_encoder.fit_transform(y)
+        # Mengubah DataFrame menjadi array numerik
+        X_values = X.values
+        scaled_X = scaler.fit_transform(X_values)
 
-        scaler = MinMaxScaler()
-        scaled_X = scaler.fit_transform(X)
         scaled_df = pd.DataFrame(scaled_X, columns=X.columns)
 
         X_train, X_test, y_train, y_test = train_test_split(scaled_df, y, test_size=0.2, random_state=1)
