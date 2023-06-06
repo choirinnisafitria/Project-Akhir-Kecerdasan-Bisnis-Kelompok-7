@@ -24,7 +24,7 @@ st.write("""<h1>Aplikasi Klasifikasi Penerima PIP dan KIP</h1>""",unsafe_allow_h
 with st.container():
     with st.sidebar:
         selected = option_menu(
-        st.write("""<h3 style = "text-align: center;"><img src="" width="90" height="90"><br> Kecerdasan Bisnis A <p> Kelompok 7 </p></h3>""",unsafe_allow_html=True), 
+        st.write("""<h3 style = "text-align: center;"><img src="https://lh3.googleusercontent.com/a/ALm5wu2PukBXPMX88VuehLVmYvtTCLj1-XFDgkoky1-JBg=s192-c-rg-br100" width="90" height="90"><br> MUHAMMAD HANIF SANTOSO <p>200411100078</p></h3>""",unsafe_allow_html=True), 
         ["Prepocessing", "Modeling", "Implementation"], 
             icons=['gear', 'arrow-down-square', 'check2-square'], menu_icon="cast", default_index=0,
             styles={
@@ -54,8 +54,6 @@ with st.container():
         
         #NORMALISASI NILAI X
         scaler = MinMaxScaler()
-        #scaler.fit(features)
-        #scaler.transform(features)
         scaled = scaler.fit_transform(X)
         features_names = X.columns.copy()
         #features_names.remove('label')
@@ -65,12 +63,12 @@ with st.container():
         st.dataframe(scaled_features, width=600)
 
         st.subheader('Target Label')
-        dumies = pd.get_dummies(df.Result).columns.values.tolist()
+        dumies = pd.get_dummies(df.Status).columns.values
         dumies = np.array(dumies)
 
         labels = pd.DataFrame({
-            'Positive' : [dumies[1]],
-            'Negative' : [dumies[0]]
+            'PIP': [dumies[1]],
+            'KIP': [dumies[0]]
         })
 
         st.write(labels)
@@ -78,8 +76,8 @@ with st.container():
     elif selected == "Modeling":
         df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/data.csv')
 
-        X = df.drop(columns=['Result'])
-        y = df['Result'].values
+        X = df.drop(columns=['Status'])
+        y = df['Status'].values
         
         scaler = MinMaxScaler()
         scaled = scaler.fit_transform(X)
@@ -102,14 +100,15 @@ with st.container():
             probas = probas.round()
             gaussian_akurasi = round(100 * accuracy_score(test_label,probas))
 
-            if submitted :
-                if naive :
-                    st.write('Model Naive Bayes accuracy score: {0:0.0f}'. format(gaussian_akurasi),'%')
+            if submitted:
+                if naive:
+                    st.write('Akurasi model Naive Bayes: {0:0.0f}%'.format(gaussian_akurasi))
+
             grafik = st.form_submit_button("Grafik akurasi semua model")
             if grafik:
                 data = pd.DataFrame({
-                    'Akurasi' : [gaussian_akurasi],
-                    'Model' : ['Gaussian Naive Bayes'],
+                    'Akurasi': [gaussian_akurasi],
+                    'Model': ['Gaussian Naive Bayes'],
                 })
 
                 bar_chart = px.bar(data, 
@@ -118,7 +117,7 @@ with st.container():
                     text='Akurasi',
                     color_discrete_sequence =['#FF4B4B']*len(data),
                     width=680)
-                bar_chart
+                st.plotly_chart(bar_chart)
 
     elif selected == "Implementation":
         with st.form("Implementation"):
@@ -132,8 +131,8 @@ with st.container():
             features_names = X.columns.copy()
             scaled_features = pd.DataFrame(scaled, columns=features_names)
 
-            training, test = train_test_split(scaled_features,test_size=0.2, random_state=1)#Nilai X training dan Nilai X testing
-            training_label, test_label = train_test_split(y, test_size=0.2, random_state=1)#Nilai Y training dan Nilai Y testing
+            training, test = train_test_split(scaled_features,test_size=0.2, random_state=1)
+            training_label, test_label = train_test_split(y, test_size=0.2, random_state=1)
 
             gaussian = GaussianNB()
             gaussian = gaussian.fit(training, training_label)
@@ -141,15 +140,13 @@ with st.container():
             probas = probas[:,1]
             probas = probas.round()
 
-
             st.subheader("Implementasi Prediksi Penyakit Diabetes")
-            nama = st.number_input('Masukkan nama :')
-            jenist_inggal = st.number_input('Maukkan jenis jinggal :')
-            jenjang_pendidikan_ortu_wali = st.number_input('Masukkan jenis pendidikan ortu atau wali :')
-            pekerjaan_ortu_wali = st.number_input('Masukkan pekerjaan ortu atau wali :')
-            penghasilan_ortu_wali = st.number_input('Masukkan penghasilan ortu atau wali :')
-            model = st.selectbox('Pilihlah model yang akan anda gunakan untuk melakukan prediksi?',
-                    ('Gaussian Naive Bayes'))
+            nama = st.number_input('Masukkan nama:')
+            jenist_inggal = st.number_input('Masukkan jenis jinggal:')
+            jenjang_pendidikan_ortu_wali = st.number_input('Masukkan jenis pendidikan ortu atau wali:')
+            pekerjaan_ortu_wali = st.number_input('Masukkan pekerjaan ortu atau wali:')
+            penghasilan_ortu_wali = st.number_input('Masukkan penghasilan ortu atau wali:')
+            model = st.selectbox('Pilih model untuk melakukan prediksi:', ('Gaussian Naive Bayes'))
 
             prediksi = st.form_submit_button("Submit")
             if prediksi:
@@ -160,7 +157,7 @@ with st.container():
                     pekerjaan_ortu_wali,
                     penghasilan_ortu_wali
                 ])
-                
+
                 df_min = X.min()
                 df_max = X.max()
                 input_norm = ((inputs - df_min) / (df_max - df_min))
@@ -173,5 +170,6 @@ with st.container():
                 input_pred = mod.predict(input_norm)
 
                 st.subheader('Hasil Prediksi')
-                st.write('Menggunakan Pemodelan :',model)
-                st.write('Akurasi: {0:0.0f}'. format(akurasi),'%')
+                st.write('Menggunakan Pemodelan:', model)
+                st.write('Akurasi: {0:0.0f}%'.format(akurasi))
+                st.write('Hasil Prediksi:', input_pred[0])
