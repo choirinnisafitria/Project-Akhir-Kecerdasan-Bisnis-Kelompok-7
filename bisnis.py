@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import MinMaxScaler, LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from sklearn.naive_bayes import GaussianNB
@@ -35,8 +35,8 @@ with st.container():
         st.subheader('Data Asli')
         st.dataframe(df, width=600)
 
-        X = df.drop(columns=['Label'])
-        y = df['Label'].values
+        X = df.drop(columns=['label'])
+        y = df['label'].values
 
         scaler = MinMaxScaler()
         scaled_X = scaler.fit_transform(X)
@@ -48,8 +48,8 @@ with st.container():
     elif selected == 'Modeling':
         df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/dataset_pip_kip.csv')
 
-        X = df.drop(columns=['Label'])
-        y = df['Label'].values
+        X = df.drop(columns=['label'])
+        y = df['label'].values
 
         scaler = MinMaxScaler()
         scaled_X = scaler.fit_transform(X)
@@ -69,8 +69,11 @@ with st.container():
         st.subheader('Implementasi Prediksi Penerima PIP dan KIP')
         df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/dataset_pip_kip.csv')
 
-        X = df.drop(columns=['Label'])
-        y = df['Label'].values
+        X = df.drop(columns=['label'])
+        y = df['label'].values
+        # Encoding label teks menjadi numerik
+        label_encoder = LabelEncoder()
+        y = label_encoder.fit_transform(y)
 
         scaler = MinMaxScaler()
         scaled_X = scaler.fit_transform(X)
@@ -101,6 +104,8 @@ with st.container():
 
         prediction = gaussian.predict(input_data_scaled)
 
-        st.subheader('Hasil Prediksi')
-        st.write('Klasifikasi:', prediction[0])
+        # Menerjemahkan kembali label numerik menjadi label teks
+        predicted_label = label_encoder.inverse_transform(prediction)
 
+        st.subheader('Hasil Prediksi')
+        st.write('Klasifikasi:', predicted_label[0])
