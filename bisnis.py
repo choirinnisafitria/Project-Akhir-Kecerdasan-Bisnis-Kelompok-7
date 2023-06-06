@@ -285,8 +285,6 @@ with st.container():
             st.subheader('Modeling')
             st.write("Pilihlah model yang akan dilakukan pengecekkan akurasi:")
             naive = st.checkbox('Gaussian Naive Bayes')
-            k_nn = st.checkbox('K-Nearest Neighboor')
-            destree = st.checkbox('Decission Tree')
             submitted = st.form_submit_button("Submit")
 
             #Gaussian Naive Bayes
@@ -299,35 +297,15 @@ with st.container():
             #Accuracy
             gaussian_akurasi = round(100 * accuracy_score(test_label,probas))
 
-            #KNN
-            K=10
-            knn=KNeighborsClassifier(n_neighbors=K)
-            knn.fit(training,training_label)
-            # prediction
-            knn_predict=knn.predict(test)
-            #Accuracy
-            knn_akurasi = round(100 * accuracy_score(test_label,knn_predict))
-
-            #Decission Tree
-            dt = DecisionTreeClassifier(random_state=1)
-            dt.fit(training, training_label)
-            # prediction
-            dt_pred = dt.predict(test)
-            #Accuracy
-            dt_akurasi = round(100 * accuracy_score(test_label,dt_pred))
-
             if submitted :
                 if naive :
                     st.write('Model Naive Bayes accuracy score: {0:0.0f}'. format(gaussian_akurasi),'%')
-                if k_nn :
-                    st.write("Model KNN accuracy score : {0:0.0f}" . format(knn_akurasi),'%')
-                if destree :
-                    st.write("Model Decision Tree accuracy score : {0:0.0f}" . format(dt_akurasi),'%')
+
             grafik = st.form_submit_button("Grafik akurasi semua model")
             if grafik:
                 data = pd.DataFrame({
-                    'Akurasi' : [gaussian_akurasi, knn_akurasi, dt_akurasi],
-                    'Model' : ['Gaussian Naive Bayes', 'K-NN', 'Decission Tree'],
+                    'Akurasi' : [gaussian_akurasi],
+                    'Model' : ['Gaussian Naive Bayes'],
                 })
 
                 bar_chart = px.bar(data, 
@@ -367,35 +345,23 @@ with st.container():
             probas = probas[:,1]
             probas = probas.round()
 
-            #KNN
-            K=10
-            knn=KNeighborsClassifier(n_neighbors=K)
-            knn.fit(training,training_label)
-            knn_predict=knn.predict(test)
-
-            #Decission Tree
-            dt = DecisionTreeClassifier(random_state=1)
-            dt.fit(training, training_label)
-            dt_pred = dt.predict(test)
-
-
             st.subheader("Implementasi Prediksi Penyakit Diabetes")
-            Gender = st.slider('Jenis Kelamin', 0, 1)
-            Hemoglobin = st.number_input('Hemoglobin')
-            MCH = st.number_input('MCH (Mean Cell Hemoglobin)')
-            MCHC = st.number_input('MCHC (Mean corpuscular hemoglobin concentration)')
-            MCV = st.number_input('MCV (Mean Cell Volume)')
+            nama = st.number_input('Masukkan nama:')
+            jenist_inggal = st.number_input('Masukkan jenis jinggal:')
+            jenjang_pendidikan_ortu_wali = st.number_input('Masukkan jenis pendidikan ortu atau wali:')
+            pekerjaan_ortu_wali = st.number_input('Masukkan pekerjaan ortu atau wali:')
+            penghasilan_ortu_wali = st.number_input('Masukkan penghasilan ortu atau wali:')
             model = st.selectbox('Pilihlah model yang akan anda gunakan untuk melakukan prediksi?',
                     ('Gaussian Naive Bayes', 'K-NN', 'Decision Tree'))
 
             prediksi = st.form_submit_button("Submit")
             if prediksi:
                 inputs = np.array([
-                    Gender,
-                    Hemoglobin,
-                    MCH,
-                    MCHC,
-                    MCV
+                    nama,
+                    jenist_inggal,
+                    jenjang_pendidikan_ortu_wali,
+                    pekerjaan_ortu_wali,
+                    penghasilan_ortu_wali
                 ])
                 
                 df_min = X.min()
@@ -406,12 +372,6 @@ with st.container():
                 if model == 'Gaussian Naive Bayes':
                     mod = gaussian
                     akurasi = round(100 * accuracy_score(test_label,probas))
-                if model == 'K-NN':
-                    mod = knn 
-                    akurasi = round(100 * accuracy_score(test_label,knn_predict))
-                if model == 'Decision Tree':
-                    mod = dt
-                    akurasi = round(100 * accuracy_score(test_label,dt_pred))
 
                 input_pred = mod.predict(input_norm)
 
