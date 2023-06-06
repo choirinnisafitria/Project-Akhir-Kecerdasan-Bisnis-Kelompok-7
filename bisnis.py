@@ -22,9 +22,9 @@ st.set_page_config(
     }
 )
 st.write("""
-<center><h3 style = "text-align: justify;">KLASIFIKASI PENERIMA BANTUAN PIP DAN KIP SD NEGERI LOMBANG DAJAH 1 MENGGUNAKAN METODE NAIVE BAYES</h3></center>
+<center><h2 style = "text-align: justify;">ANALISIS SENTIMEN PADA WISATA DIENG DENGAN ALGORITMA K-NEAREST NEIGHBOR (K-NN)</h2></center>
 """,unsafe_allow_html=True)
-st.write("### Dosen Pengampu : Eka Mala Sari Rochman, S.Kom., M.Kom.",unsafe_allow_html=True)
+st.write("### Dosen Pengampu : Dr. FIKA HASTARITA RACHMAN, ST., M.Eng",unsafe_allow_html=True)
 
 with st.container():
     with st.sidebar:
@@ -47,10 +47,13 @@ with st.container():
 
     elif selected == "Dataset":
         st.write("#### Deskripsi Dataset")
-        st.write(""" <p style = "text-align: justify;">dataset tentang ulasan terhadap wisata dieng dari website tripadvisor. Selanjutnya data ulasan tersebut akan diklasifikasikan ke dalam dua kategori sentimen yaitu negatif dan positif kemudian dilakukan penerapan algoritma k-nearest neighbor (K-NN) untuk mengetahui nilai akurasinya.</p>""",unsafe_allow_html=True)
-        st.write("#### Preprocessing Dataset")
-        st.write(""" <p style = "text-align: justify;">Preprocessing data merupakan proses dalam mengganti teks tidak teratur supaya teratur yang nantinya dapat membantu pada proses pengolahan data.</p>""",unsafe_allow_html=True)
-        
+        st.write(""" <p style = "text-align: justify;">Program Indonesia Pintar (PIP) dan Kartu Indonesia Pintar (KIP) adalah program bantuan sosial yang ditujukan untuk meningkatkan akses dan kualitas pendidikan bagi anak-anak di Indonesia. Program ini didesain untuk membantu meringankan beban biaya pendidikan bagi keluarga yang berpenghasilan rendah.
+
+                                                    PIP adalah program bantuan sosial yang menyediakan bantuan pendidikan kepada siswa dari keluarga miskin atau kurang mampu. Program ini bertujuan untuk memastikan bahwa anak-anak dari keluarga kurang mampu dapat mengakses pendidikan yang layak dan berkualitas. Bantuan yang diberikan meliputi biaya pendidikan seperti uang sekolah, uang buku, seragam, dan biaya kegiatan sekolah lainnya. PIP membantu mengurangi beban keuangan keluarga dalam memenuhi kebutuhan pendidikan anak-anak mereka.
+
+                                                    KIP adalah kartu elektronik yang diberikan kepada siswa dari keluarga miskin atau kurang mampu. Kartu ini berfungsi sebagai sarana identifikasi dan verifikasi penerima bantuan pendidikan. Melalui KIP, siswa dapat memperoleh akses ke berbagai program bantuan pendidikan, seperti bantuan biaya sekolah, beasiswa, atau subsidi lainnya. KIP membantu meningkatkan aksesibilitas siswa ke pendidikan formal dan membantu mereka dalam memenuhi kebutuhan pendidikan.
+
+                                                    Dengan adanya program PIP dan KIP, diharapkan anak-anak dari keluarga kurang mampu dapat tetap melanjutkan pendidikan mereka tanpa terkendala oleh faktor finansial. Program ini berperan penting dalam menciptakan kesetaraan dan kesempatan yang adil dalam pendidikan, serta meningkatkan tingkat partisipasi dan kelulusan siswa dari keluarga kurang mampu.</p>""",unsafe_allow_html=True)
         st.write("#### Dataset")
         # Read Dataset
         df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/datasetpipkip.csv')
@@ -59,7 +62,6 @@ with st.container():
     elif selected == "Implementation":
         # Read Dataset
         df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/datasetpipkip.csv')
-        st.write(df)
 
         # Preprocessing data
         # Mendefinisikan Variable X dan Y
