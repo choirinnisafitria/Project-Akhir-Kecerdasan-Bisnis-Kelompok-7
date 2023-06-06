@@ -30,13 +30,13 @@ with st.container():
 
     if selected == 'Preprocessing':
         st.subheader('Normalisasi Data')
-        df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/dataset.csv')
+        df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/dataset_pip_kip.csv')
         
         st.subheader('Data Asli')
         st.dataframe(df, width=600)
 
-        X = df.drop(columns=['label'])
-        y = df['label'].values
+        X = df.drop(columns=['Label'])
+        y = df['Label'].values
 
         scaler = MinMaxScaler()
         scaled_X = scaler.fit_transform(X)
@@ -46,10 +46,10 @@ with st.container():
         st.dataframe(scaled_df, width=600)
 
     elif selected == 'Modeling':
-        df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/dataset.csv')
+        df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/dataset_pip_kip.csv')
 
-        X = df.drop(columns=['label'])
-        y = df['label'].values
+        X = df.drop(columns=['Label'])
+        y = df['Label'].values
 
         scaler = MinMaxScaler()
         scaled_X = scaler.fit_transform(X)
@@ -67,10 +67,10 @@ with st.container():
 
     elif selected == 'Implementation':
         st.subheader('Implementasi Prediksi Penerima PIP dan KIP')
-        df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/dataset.csv')
+        df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/dataset_pip_kip.csv')
 
-        X = df.drop(columns=['label'])
-        y = df['label'].values
+        X = df.drop(columns=['Label'])
+        y = df['Label'].values
 
         scaler = MinMaxScaler()
         scaled_X = scaler.fit_transform(X)
