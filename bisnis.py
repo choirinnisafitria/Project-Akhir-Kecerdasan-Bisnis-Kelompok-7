@@ -24,7 +24,7 @@ with st.container():
     with st.sidebar:
         selected = st.selectbox(
             'Menu',
-            ['Preprocessing', 'Modeling', 'Implementation'],
+            ['Preprocessing', 'Modeling'],
             index=0
         )
 
@@ -64,53 +64,3 @@ with st.container():
 
         st.subheader('Hasil Modeling dengan Naive Bayes')
         st.write('Akurasi: {:.2f}%'.format(accuracy * 100))
-
-    elif selected == 'Implementation':
-        st.subheader('Implementasi Prediksi Penerima PIP dan KIP')
-        df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/dataset.csv')
-
-        X = df.drop(columns=['Status'])
-        y = df['Status'].values
-
-        # Mengubah DataFrame menjadi array numerik
-        X_values = X.values
-        scaled_X = scaler.fit_transform(X_values)
-
-        scaled_df = pd.DataFrame(scaled_X, columns=X.columns)
-
-        X_train, X_test, y_train, y_test = train_test_split(scaled_df, y, test_size=0.2, random_state=1)
-
-        gaussian = GaussianNB()
-        gaussian.fit(X_train, y_train)
-
-        st.subheader('Implementasi Prediksi Penerima PIP dan KIP')
-
-        nama = st.text_input('Masukkan nama:')
-        jenis_tinggal = st.selectbox('Masukkan jenis tinggal:', ['Rumah Pribadi', 'Rumah Sewa'])
-        jenjang_pendidikan_ortu_wali = st.selectbox('Masukkan jenjang pendidikan ortu atau wali:', ['SD', 'SMP', 'SMA', 'D3', 'S1', 'S2', 'S3'])
-        pekerjaan_ortu_wali = st.selectbox('Masukkan pekerjaan ortu atau wali:', ['PNS', 'Swasta', 'Wiraswasta', 'Tidak Bekerja'])
-        penghasilan_ortu_wali = st.selectbox('Masukkan penghasilan ortu atau wali:', ['< 1 Juta', '1-3 Juta', '3-5 Juta', '> 5 Juta'])
-
-        input_data = np.array([
-            nama,
-            jenis_tinggal,
-            jenjang_pendidikan_ortu_wali,
-            pekerjaan_ortu_wali,
-            penghasilan_ortu_wali
-        ]).reshape(1, -1)
-
-        # Mengubah data input menjadi data numerik
-        input_data[0][1] = 1 if input_data[0][1] == 'Rumah Sewa' else 0
-        input_data[0][2] = label_encoder.transform([input_data[0][2]])[0]
-        input_data[0][3] = label_encoder.transform([input_data[0][3]])[0]
-        input_data[0][4] = label_encoder.transform([input_data[0][4]])[0]
-
-        input_data_scaled = scaler.transform(input_data)
-
-        prediction = gaussian.predict(input_data_scaled)
-
-        # Menerjemahkan kembali label numerik menjadi label teks
-        predicted_label = label_encoder.inverse_transform(prediction)
-
-        st.subheader('Hasil Prediksi')
-        st.write('Klasifikasi:', predicted_label[0])
