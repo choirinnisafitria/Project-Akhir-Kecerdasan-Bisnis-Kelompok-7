@@ -35,8 +35,8 @@ with st.container():
         st.subheader('Data Asli')
         st.dataframe(df, width=600)
 
-        X = df.drop(columns=['status'])
-        y = df['status'].values
+        X = df.drop(columns=['Status'])
+        y = df['Status'].values
 
         scaler = MinMaxScaler()
         scaled_X = scaler.fit_transform(X)
@@ -48,8 +48,8 @@ with st.container():
     elif selected == 'Modeling':
         df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/data.csv')
 
-        X = df.drop(columns=['status'])
-        y = df['status'].values
+        X = df.drop(columns=['Status'])
+        y = df['Status'].values
 
         scaler = MinMaxScaler()
         scaled_X = scaler.fit_transform(X)
@@ -69,8 +69,8 @@ with st.container():
         st.subheader('Implementasi Prediksi Penyakit Diabetes')
         df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/data.csv')  # Ganti dengan nama file dataset Anda
 
-        X = df.drop(columns=['status'])
-        y = df['status'].values
+        X = df.drop(columns=['Status'])
+        y = df['Status'].values
 
         scaler = MinMaxScaler()
         scaled_X = scaler.fit_transform(X)
