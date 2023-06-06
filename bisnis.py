@@ -29,7 +29,7 @@ st.write("### Dosen Pengampu : Dr. FIKA HASTARITA RACHMAN, ST., M.Eng",unsafe_al
 with st.container():
     with st.sidebar:
         selected = option_menu(
-        st.write("""<h3 style = "text-align: center;"><img src="https://bareng-bjn.desa.id/desa/upload/artikel/sedang_1554884848_e.jpg" width="120" height="120"></h3>""",unsafe_allow_html=True), 
+        st.write("""<h3 style = "text-align: center;"><img src="https://cdn-icons-png.flaticon.com/512/1998/1998664.png" width="120" height="120"></h3>""",unsafe_allow_html=True), 
         ["Home","Dataset", "Implementation", "Tentang Kami"], 
             icons=['house', 'bar-chart','check2-square', 'person'], menu_icon="cast", default_index=0,
             styles={
@@ -42,7 +42,7 @@ with st.container():
 
     if selected == "Home":
         st.write("""<h3 style = "text-align: center;">
-        <img src="https://tse2.mm.bing.net/th?id=OIP.STTKkkt17TKUvsAE4wKHCwHaED&pid=Api&P=0&h=180" width="500" height="300">
+        <img src="https://bareng-bjn.desa.id/desa/upload/artikel/sedang_1554884848_e.jpg" width="500" height="300">
         </h3>""",unsafe_allow_html=True)
 
     elif selected == "Dataset":
