@@ -30,7 +30,7 @@ with st.container():
 
     if selected == 'Preprocessing':
         st.subheader('Normalisasi Data')
-        df = pd.read_csv('data.csv')
+        df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/data.csv')
         
         st.subheader('Data Asli')
         st.dataframe(df, width=600)
@@ -46,7 +46,7 @@ with st.container():
         st.dataframe(scaled_df, width=600)
 
     elif selected == 'Modeling':
-        df = pd.read_csv('data.csv')
+        df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/data.csv')
 
         X = df.drop(columns=['status'])
         y = df['status'].values
@@ -67,7 +67,7 @@ with st.container():
 
     elif selected == 'Implementation':
         st.subheader('Implementasi Prediksi Penyakit Diabetes')
-        df = pd.read_csv('data.csv')  # Ganti dengan nama file dataset Anda
+        df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/data.csv')  # Ganti dengan nama file dataset Anda
 
         X = df.drop(columns=['status'])
         y = df['status'].values
