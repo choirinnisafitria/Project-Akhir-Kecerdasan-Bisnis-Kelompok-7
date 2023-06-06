@@ -31,50 +31,66 @@ with st.container():
     if selected == 'Oke':
         st.subheader('Normalisasi Data')
 
-    elif selected == 'Implementation':
-        st.subheader('Implementasi Prediksi Penerima PIP dan KIP')
-        df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/dataset.csv')
+    elif selected == "Implementation":
+        with st.form("Implementation"):
+            #Read Dataset
+            df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/dataset.csv')
 
-        X = df[['Nama', 'Jenis_Tinggal', 'Jenis_Pendidikan_Ortu_Wali', 'Pekerjaan_Ortu_Wali', 'Penghasilan_Ortu_Wali']]
-        y = df['Status'].values
+            #Preprocessing data
+            #Mendefinisikan Variable X dan Y
+            X = df[['Nama', 'Jenis_Tinggal', 'Jenis_Pendidikan_Ortu_Wali', 'Pekerjaan_Ortu_Wali', 'Penghasilan_Ortu_Wali']]
+            y = df['Status'].values
 
-        # One-hot encoding pada atribut kategorikal
-        encoder = OneHotEncoder()
-        X_encoded = encoder.fit_transform(X).toarray()
-        scaler = MinMaxScaler()
-        scaled_X = scaler.fit_transform(X_encoded)
+            # One-hot encoding pada atribut kategorikal
+            encoder = OneHotEncoder()
+            X_encoded = encoder.fit_transform(X).toarray()
+            features_names = encoder.get_feature_names_out(input_features=X.columns)
+            scaled_features = pd.DataFrame(X_encoded, columns=features_names)
 
-        # Mengambil nama kolom hasil one-hot encoding
-        one_hot_columns = encoder.get_feature_names_out(X.columns)
-        scaled_df = pd.DataFrame(scaled_X, columns=one_hot_columns)
+            #Split Data 
+            training, test = train_test_split(scaled_features, test_size=0.2, random_state=1)  # Nilai X training dan Nilai X testing
+            training_label, test_label = train_test_split(y, test_size=0.2, random_state=1)  # Nilai Y training dan Nilai Y testing
 
-        X_train, X_test, y_train, y_test = train_test_split(scaled_df, y, test_size=0.2, random_state=1)
+            # Gaussian Naive Bayes
+            gaussian = GaussianNB()
+            gaussian = gaussian.fit(training, training_label)
+            probas = gaussian.predict_proba(test)
+            probas = probas[:, 1]
+            probas = probas.round()
 
-        gaussian = GaussianNB()
-        gaussian.fit(X_train, y_train)
+            st.subheader("Implementasi Prediksi Penyakit Diabetes")
+            nama = st.text_input('Masukkan nama:')
+            jenis_tinggal = st.text_input('Masukkan jenis tinggal:')
+            jenis_pendidikan_ortu_wali = st.text_input('Masukkan jenis pendidikan ortu atau wali:')
+            pekerjaan_ortu_wali = st.text_input('Masukkan pekerjaan ortu atau wali:')
+            penghasilan_ortu_wali = st.text_input('Masukkan penghasilan ortu atau wali:')
+            model = st.selectbox('Pilihlah model yang akan Anda gunakan untuk melakukan prediksi?',
+                                ('Gaussian Naive Bayes'))
 
-        # Input data untuk prediksi
-        input_data = st.text_input('Masukkan data untuk prediksi (pisahkan dengan koma):')
-        input_data = list(map(str.strip, input_data.split(',')))
+            prediksi = st.form_submit_button("Submit")
+            if prediksi:
+                inputs = np.array([
+                    nama,
+                    jenis_tinggal,
+                    jenis_pendidikan_ortu_wali,
+                    pekerjaan_ortu_wali,
+                    penghasilan_ortu_wali
+                ]).reshape(1, -1)
 
-        # Mengecek jumlah input yang sesuai dengan jumlah kolom pada dataset
-        if len(input_data) != len(X.columns):
-            st.warning('Jumlah input tidak sesuai. Masukkan {} nilai.'.format(len(X.columns)))
-        else:
-            # Mengubah input menjadi dataframe
-            input_df = pd.DataFrame([input_data], columns=X.columns)
+                # Transformasi one-hot encoding pada input data
+                inputs_encoded = encoder.transform(inputs).toarray()
 
-            # Melakukan one-hot encoding pada input data
-            input_encoded = encoder.transform(input_df).toarray()
+                if model == 'Gaussian Naive Bayes':
+                    mod = gaussian
+                    akurasi = round(100 * accuracy_score(test_label, probas))
 
-            # Melakukan normalisasi pada input data
-            scaled_input = scaler.transform(input_encoded)
+                input_pred = mod.predict(inputs_encoded)
 
-            # Melakukan prediksi menggunakan model Gaussian Naive Bayes
-            prediction = gaussian.predict(scaled_input)
+                st.subheader('Hasil Prediksi')
+                st.write('Menggunakan Pemodelan:', model)
+                st.write('Akurasi: {0:0.0f}'.format(akurasi), '%')
 
-            # Mengembalikan hasil prediksi ke label asli menggunakan inverse transform
-            predicted_label = encoder.inverse_transform(prediction)[0]
-
-            st.subheader('Hasil Prediksi')
-            st.write('Prediksi: ', predicted_label)
+                if input_pred == 1:
+                    st.error('PIP')
+                else:
+                    st.success('KIP')
