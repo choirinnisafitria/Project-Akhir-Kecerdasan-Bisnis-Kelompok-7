@@ -105,14 +105,14 @@ with st.container():
 
     elif selected == "Dataset":
         st.subheader("""Dataset Anemia""")
-        df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/dataset_pip_kip.csv')
+        df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/dataset.csv')
         st.dataframe(df, width=600)
 
     elif selected == "Prepocessing":
         st.subheader("""Normalisasi Data""")
         st.write("""Rumus Normalisasi Data :""")
         st.image('https://i.stack.imgur.com/EuitP.png', use_column_width=False, width=250)
-        df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/dataset_pip_kip.csv')
+        df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/dataset.csv')
         st.markdown("""
         Dimana :
         - X = data yang akan dinormalisasi atau data asli
@@ -150,7 +150,7 @@ with st.container():
 
     elif selected == "Modeling":
         #Read Dataset
-        df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/dataset_pip_kip.csv')
+        df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/dataset.csv')
 
         #Preprocessing data
         #Mendefinisikan Varible X dan Y
@@ -230,7 +230,7 @@ with st.container():
     elif selected == "Implementation":
         with st.form("Implementation"):
             #Read Dataset
-            df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/dataset_pip_kip.csv')
+            df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/dataset.csv')
 
             #Preprocessing data
             #Mendefinisikan Varible X dan Y
