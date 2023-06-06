@@ -85,9 +85,9 @@ with st.container():
         st.write('Menggunakan Pemodelan:', model)
 
         if len(test_label) > 0:
+            test_label = test_label.astype(int)
             akurasi = round(100 * accuracy_score(test_label, probas.round()))
             st.write('Akurasi: {0:0.0f}'.format(akurasi), '%')
-
 
         if input_pred == 1:
             st.error('PIP')
