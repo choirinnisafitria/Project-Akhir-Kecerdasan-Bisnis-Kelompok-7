@@ -1,12 +1,10 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from sklearn.preprocessing import MinMaxScaler, LabelEncoder
+from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, confusion_matrix, precision_score, recall_score, f1_score
+from sklearn.metrics import accuracy_score
 from sklearn.naive_bayes import GaussianNB
-import seaborn as sns
-import matplotlib.pyplot as plt
 
 st.set_page_config(
     page_title="Klasifikasi Penerima PIP dan KIP",
@@ -33,7 +31,7 @@ with st.container():
     if selected == 'Preprocessing':
         st.subheader('Normalisasi Data')
         df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/dataset.csv')
-        
+
         st.subheader('Data Asli')
         st.dataframe(df, width=600)
 
