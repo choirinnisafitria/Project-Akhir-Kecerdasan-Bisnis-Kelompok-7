@@ -66,8 +66,8 @@ with st.container():
         st.write('Akurasi: {:.2f}%'.format(accuracy * 100))
 
     elif selected == 'Implementation':
-        st.subheader('Implementasi Prediksi Penyakit Diabetes')
-        df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/dataset.csv')  # Ganti dengan nama file dataset Anda
+        st.subheader('Implementasi Prediksi Penerima PIP dan KIP')
+        df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/dataset.csv')
 
         X = df.drop(columns=['label'])
         y = df['label'].values
@@ -81,12 +81,14 @@ with st.container():
         gaussian = GaussianNB()
         gaussian.fit(X_train, y_train)
 
+        st.subheader('Implementasi Prediksi Penerima PIP dan KIP')
+
         nama = st.number_input('Masukkan nama:')
         jenis_tinggal = st.number_input('Masukkan jenis tinggal:')
         jenjang_pendidikan_ortu_wali = st.number_input('Masukkan jenjang pendidikan ortu atau wali:')
         pekerjaan_ortu_wali = st.number_input('Masukkan pekerjaan ortu atau wali:')
         penghasilan_ortu_wali = st.number_input('Masukkan penghasilan ortu atau wali:')
-        
+
         input_data = np.array([
             nama,
             jenis_tinggal,
@@ -101,3 +103,4 @@ with st.container():
 
         st.subheader('Hasil Prediksi')
         st.write('Klasifikasi:', prediction[0])
+
