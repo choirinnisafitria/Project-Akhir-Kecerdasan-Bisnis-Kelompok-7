@@ -90,7 +90,6 @@ with st.container():
             akurasi = round(100 * accuracy_score(test_label, probas))
             st.write('Akurasi: {0:0.0f}'.format(akurasi), '%')
 
-
         if input_pred == 1:
             st.error('PIP')
         else:
