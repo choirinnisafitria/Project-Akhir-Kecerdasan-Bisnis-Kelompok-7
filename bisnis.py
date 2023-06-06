@@ -24,14 +24,11 @@ with st.container():
     with st.sidebar:
         selected = st.selectbox(
             'Menu',
-            ['Oke', 'Implementation'],
+            ['Implementation'],
             index=0
         )
 
-    if selected == 'Oke':
-        st.subheader('Normalisasi Data')
-
-    elif selected == "Implementation":
+    if selected == "Implementation":
         #Read Dataset
         df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/dataset.csv')
 
@@ -42,7 +39,7 @@ with st.container():
 
         # One-hot encoding pada atribut kategorikal
         encoder = OneHotEncoder()
-        X_encoded = encoder.fit_transform(X).toarray()
+        X_encoded = encoder.fit_transform(X.astype(str)).toarray()
         features_names = encoder.get_feature_names_out(input_features=X.columns)
         scaled_features = pd.DataFrame(X_encoded, columns=features_names)
 
@@ -73,6 +70,9 @@ with st.container():
             penghasilan_ortu_wali
         ]).reshape(1, -1)
 
+        # Ubah input menjadi tipe data string
+        inputs = inputs.astype(str)
+
         # Transformasi one-hot encoding pada input data
         inputs_encoded = encoder.transform(inputs).toarray()
 
@@ -90,3 +90,4 @@ with st.container():
             st.error('PIP')
         else:
             st.success('KIP')
+
