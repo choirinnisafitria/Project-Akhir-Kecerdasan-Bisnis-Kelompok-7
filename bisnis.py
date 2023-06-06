@@ -67,35 +67,36 @@ with st.container():
         penghasilan_ortu_wali = st.text_input('Masukkan penghasilan ortu atau wali:')
         model = 'Gaussian Naive Bayes'  # Menggunakan model Gaussian Naive Bayes secara langsung
 
-        inputs = np.array([
-            nama,
-            jenis_tinggal,
-            jenis_pendidikan_ortu_wali,
-            pekerjaan_ortu_wali,
-            penghasilan_ortu_wali
-        ]).reshape(1, -1)
+        if st.button('Submit'):
+            inputs = np.array([
+                nama,
+                jenis_tinggal,
+                jenis_pendidikan_ortu_wali,
+                pekerjaan_ortu_wali,
+                penghasilan_ortu_wali
+            ]).reshape(1, -1)
 
-        # Ubah input menjadi tipe data string
-        inputs = inputs.astype(str)
+            # Ubah input menjadi tipe data string
+            inputs = inputs.astype(str)
 
-        # Transformasi one-hot encoding pada input data
-        inputs_encoded = encoder.transform(inputs).toarray()
+            # Transformasi one-hot encoding pada input data
+            inputs_encoded = encoder.transform(inputs).toarray()
 
-        if model == 'Gaussian Naive Bayes':
-            mod = gaussian
+            if model == 'Gaussian Naive Bayes':
+                mod = gaussian
 
-        input_pred = mod.predict(inputs_encoded)
+            input_pred = mod.predict(inputs_encoded)
 
-        st.subheader('Hasil Prediksi')
-        st.write('Menggunakan Pemodelan:', model)
-        
-        if len(test_label) > 0:
-            test_label = test_label.astype(int)
-            probas = probas.round().astype(int)
-            akurasi = round(100 * accuracy_score(test_label, probas))
-            st.write('Akurasi: {0:0.0f}'.format(akurasi), '%')
+            st.subheader('Hasil Prediksi')
+            st.write('Menggunakan Pemodelan:', model)
 
-        if input_pred == 1:
-            st.error('PIP')
-        else:
-            st.success('KIP')
+            if len(test_label) > 0:
+                test_label = test_label.astype(int)
+                probas = probas.round().astype(int)
+                akurasi = round(100 * accuracy_score(test_label, probas))
+                st.write('Akurasi: {0:0.0f}'.format(akurasi), '%')
+
+            if input_pred == 1:
+                st.error('PIP')
+            else:
+                st.success('KIP')
