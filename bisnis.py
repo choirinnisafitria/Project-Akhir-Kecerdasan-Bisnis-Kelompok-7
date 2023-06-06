@@ -63,7 +63,7 @@ with st.container():
         jenis_tinggal = st.text_input('Masukkan jenis tinggal:')
         jenis_pendidikan_ortu_wali = st.text_input('Masukkan jenis pendidikan ortu atau wali:')
         pekerjaan_ortu_wali = st.text_input('Masukkan pekerjaan ortu atau wali:')
-        penghasilan_ortu_wali = st.number_input('Masukkan penghasilan ortu atau wali:', value=0)
+        penghasilan_ortu_wali = st.selectbox('Pilih penghasilan ortu atau wali:', ['Tidak Berpenghasilan', 'Kurang dari 1.000.000', '500,000 - 999,999', '1,000,000 - 1,999,999'])
         model = 'Gaussian Naive Bayes'  # Menggunakan model Gaussian Naive Bayes secara langsung
 
         if st.button('Submit'):
