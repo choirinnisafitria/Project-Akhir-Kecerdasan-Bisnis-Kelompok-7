@@ -22,7 +22,7 @@ st.set_page_config(
     }
 )
 st.write("""
-<center><h2 style = "text-align: justify;">KLASIFIKASI PENERIMA BANTUAN PIP DAN KIP SD NEGERI LOMBANG DAJAH 1 MENGGUNAKAN METODE NAIVE BAYES</h2></center>
+<center><h3 style = "text-align: justify;">KLASIFIKASI PENERIMA BANTUAN PIP DAN KIP SD NEGERI LOMBANG DAJAH 1 MENGGUNAKAN METODE NAIVE BAYES </h3></center>
 """,unsafe_allow_html=True)
 st.write("### Dosen Pengampu : Eka Mala Sari Rochman, S.Kom., M.Kom.",unsafe_allow_html=True)
 
