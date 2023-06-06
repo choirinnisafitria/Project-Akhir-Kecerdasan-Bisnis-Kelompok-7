@@ -59,10 +59,10 @@ with st.container():
         probas = probas[:, 1]
         probas = probas.round().astype(int)
 
-        st.subheader("Implementasi Prediksi Penyakit Diabetes")
-        jenis_tinggal = st.text_input('Masukkan jenis tinggal:')
-        jenis_pendidikan_ortu_wali = st.text_input('Masukkan jenis pendidikan ortu atau wali:')
-        pekerjaan_ortu_wali = st.text_input('Masukkan pekerjaan ortu atau wali:')
+        st.subheader("Implementasi Penerima bantuan PIP dan KIP")
+        jenis_tinggal = st.selectbox('Masukkan jenis tinggal:', ['Bersama orang tua', 'Wali'])
+        jenis_pendidikan_ortu_wali = st.selectbox('Masukkan jenis pendidikan ortu atau wali:', ['Tidak sekolah', 'SD sederajat', 'SMP sederajat', 'SMA sederajat', 'D2', 'S1'])
+        pekerjaan_ortu_wali = st.selectbox('Masukkan pekerjaan ortu atau wali:', ['Sudah Meninggal', 'Petani', 'Pedagang Kecil', 'Karyawan Swasta', 'Wiraswasta'])
         penghasilan_ortu_wali = st.selectbox('Pilih penghasilan ortu atau wali:', ['Tidak Berpenghasilan', 'Kurang dari 1.000.000', '500,000 - 999,999', '1,000,000 - 1,999,999'])
         model = 'Gaussian Naive Bayes'  # Menggunakan model Gaussian Naive Bayes secara langsung
 
