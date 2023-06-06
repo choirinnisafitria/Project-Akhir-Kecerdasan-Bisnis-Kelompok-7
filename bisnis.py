@@ -23,8 +23,8 @@ df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kece
 
 #data_set_description
 with data_set_description:
-    st.write("###### Data Set Ini Adalah : Weather Prediction (Prediksi Cuaca) ")
-    st.write("###### Sumber Data Set dari Kaggle : https://www.kaggle.com/datasets/ananthr1/weather-prediction")
+    st.write("###### Data Set Ini Adalah : Label Prediction (Prediksi Cuaca) ")
+    st.write("###### Sumber Data Set dari Kaggle : https://www.kaggle.com/datasets/ananthr1/Label-prediction")
     st.write("""###### Penjelasan setiap kolom : """)
     st.write("""1. preciptation (curah hujan) :
 
@@ -42,7 +42,7 @@ with data_set_description:
 
     Kecepatan angin disebabkan oleh pergerakan angin dari tekanan tinggi ke tekanan rendah, biasanya karena perubahan suhu
     """)
-    st.write("""5. weather (cuaca) :
+    st.write("""5. Label (cuaca) :
 
     Output (keluaran)
     """)
@@ -60,8 +60,8 @@ with data_set_description:
     4. snow (salju)
     5. fog (kabut)
     """)
-    st.write("###### Aplikasi ini untuk : Weather Prediction (Prediksi Cuaca) ")
-    st.write("###### Source Code Aplikasi ada di Github anda bisa acces di link : https://github.com/HambaliFitrianto/Aplikasi-Web-Data-Mining-Weather-Prediction")
+    st.write("###### Aplikasi ini untuk : Label Prediction (Prediksi Cuaca) ")
+    st.write("###### Source Code Aplikasi ada di Github anda bisa acces di link : https://github.com/HambaliFitrianto/Aplikasi-Web-Data-Mining-Label-Prediction")
     st.write("###### Untuk Wa saya anda bisa hubungi nomer ini : http://wa.me/6282138614807 ")
 
 #Uploud data
@@ -85,10 +85,10 @@ with preprocessing:
     - min = nilai minimum semua data asli
     - max = nilai maksimum semua data asli
     """)
-    df = df.drop(columns=["date"])
+    df = df.drop(columns=["Nama"])
     #Mendefinisikan Varible X dan Y
-    X = df.drop(columns=['weather'])
-    y = df['weather'].values
+    X = df.drop(columns=['Label'])
+    y = df['Label'].values
     df_min = X.min()
     df_max = X.max()
     
@@ -105,7 +105,7 @@ with preprocessing:
     st.write(scaled_features)
 
     st.subheader('Target Label')
-    dumies = pd.get_dummies(df.weather).columns.values.tolist()
+    dumies = pd.get_dummies(df.Label).columns.values.tolist()
     dumies = np.array(dumies)
 
     labels = pd.DataFrame({
