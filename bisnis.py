@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from sklearn.preprocessing import MinMaxScaler, OneHotEncoder
+from sklearn.preprocessing import OneHotEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from sklearn.naive_bayes import GaussianNB
@@ -29,21 +29,21 @@ with st.container():
         )
 
     if selected == "Implementation":
-        #Read Dataset
+        # Read Dataset
         df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/dataset.csv')
 
-        #Preprocessing data
-        #Mendefinisikan Variable X dan Y
+        # Preprocessing data
+        # Mendefinisikan Variable X dan Y
         X = df[['Nama', 'Jenis_Tinggal', 'Jenis_Pendidikan_Ortu_Wali', 'Pekerjaan_Ortu_Wali', 'Penghasilan_Ortu_Wali']]
         y = df['Status'].values
 
         # One-hot encoding pada atribut kategorikal
-        encoder = OneHotEncoder()
+        encoder = OneHotEncoder(handle_unknown='ignore')
         X_encoded = encoder.fit_transform(X.astype(str)).toarray()
         features_names = encoder.get_feature_names_out(input_features=X.columns)
         scaled_features = pd.DataFrame(X_encoded, columns=features_names)
 
-        #Split Data 
+        # Split Data 
         training, test = train_test_split(scaled_features, test_size=0.2, random_state=1)  # Nilai X training dan Nilai X testing
         training_label, test_label = train_test_split(y, test_size=0.2, random_state=1)  # Nilai Y training dan Nilai Y testing
 
@@ -90,4 +90,3 @@ with st.container():
             st.error('PIP')
         else:
             st.success('KIP')
-
