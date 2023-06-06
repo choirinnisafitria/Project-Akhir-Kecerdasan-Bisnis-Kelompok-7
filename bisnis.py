@@ -1,6 +1,4 @@
 import streamlit as st
-import plotly.express as px
-from streamlit_option_menu import option_menu
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
@@ -19,157 +17,87 @@ st.set_page_config(
         'About': "# This is a header. This is an *extremely* cool app!"
     }
 )
-st.write("""<h1>Aplikasi Klasifikasi Penerima PIP dan KIP</h1>""",unsafe_allow_html=True)
+
+st.write("""<h1>Aplikasi Klasifikasi Penerima PIP dan KIP</h1>""", unsafe_allow_html=True)
 
 with st.container():
     with st.sidebar:
-        selected = option_menu(
-        st.write("""<h3 style = "text-align: center;"><img src="" width="90" height="90"><br> KECERDASAN BISNIS A <p>Kelompok 7</p></h3>""",unsafe_allow_html=True), 
-        ["Prepocessing", "Modeling", "Implementation"], 
-            icons=['gear', 'arrow-down-square', 'check2-square'], menu_icon="cast", default_index=0,
-            styles={
-                "container": {"padding": "0!important", "background-color": "#FF4B4B"},
-                "icon": {"color": "white", "font-size": "18px"}, 
-                "nav-link": {"font-size": "16px", "text-align": "left", "margin":"0px", "color":"white"},
-                "nav-link-selected":{"background-color": "#FF4B4B"}
-            }
+        selected = st.selectbox(
+            'Menu',
+            ['Preprocessing', 'Modeling', 'Implementation'],
+            index=0
         )
 
-    if selected == "Prepocessing":
-        st.subheader("""Normalisasi Data""")
-        st.write("""Rumus Normalisasi Data :""")
-        st.image('https://i.stack.imgur.com/EuitP.png', use_column_width=False, width=250)
-        df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/data.csv')
-        st.markdown("""
-        Dimana :
-        - X = data yang akan dinormalisasi atau data asli
-        - min = nilai minimum semua data asli
-        - max = nilai maksimum semua data asli
-        """)
-        #Mendefinisikan Varible X dan Y
-        X = df.drop(columns=['Status'])
-        y = df['Status'].values
-        df_min = X.min()
-        df_max = X.max()
+    if selected == 'Preprocessing':
+        st.subheader('Normalisasi Data')
+        df = pd.read_csv('data.csv')  # Ganti dengan nama file dataset Anda
         
-        #NORMALISASI NILAI X
-        scaler = MinMaxScaler()
-        scaled = scaler.fit_transform(X)
-        features_names = X.columns.copy()
-        #features_names.remove('label')
-        scaled_features = pd.DataFrame(scaled, columns=features_names)
-
-        st.subheader('Hasil Normalisasi Data')
-        st.dataframe(scaled_features, width=600)
-
-        st.subheader('Target Label')
-        dumies = pd.get_dummies(df.Status).columns.values
-        dumies = np.array(dumies)
-
-        labels = pd.DataFrame({
-            'PIP': [dumies[1]],
-            'KIP': [dumies[0]]
-        })
-
-        st.write(labels)
-
-    elif selected == "Modeling":
-        df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/data.csv')
+        st.subheader('Data Asli')
+        st.dataframe(df, width=600)
 
         X = df.drop(columns=['Status'])
         y = df['Status'].values
-        
+
         scaler = MinMaxScaler()
-        scaled = scaler.fit_transform(X)
-        features_names = X.columns.copy()
-        scaled_features = pd.DataFrame(scaled, columns=features_names)
+        scaled_X = scaler.fit_transform(X)
+        scaled_df = pd.DataFrame(scaled_X, columns=X.columns)
 
-        training, test = train_test_split(scaled_features,test_size=0.2, random_state=1)
-        training_label, test_label = train_test_split(y, test_size=0.2, random_state=1)
+        st.subheader('Data Setelah Normalisasi')
+        st.dataframe(scaled_df, width=600)
 
-        with st.form("modeling"):
-            st.subheader('Modeling')
-            st.write("Pilihlah model yang akan dilakukan pengecekkan akurasi:")
-            naive = st.checkbox('Gaussian Naive Bayes')
-            submitted = st.form_submit_button("Submit")
+    elif selected == 'Modeling':
+        df = pd.read_csv('data.csv')  # Ganti dengan nama file dataset Anda
 
-            gaussian = GaussianNB()
-            gaussian = gaussian.fit(training, training_label)
-            probas = gaussian.predict_proba(test)
-            probas = probas[:,1]
-            probas = probas.round()
-            gaussian_akurasi = round(100 * accuracy_score(test_label,probas))
+        X = df.drop(columns=['Status'])
+        y = df['Status'].values
 
-            if submitted:
-                if naive:
-                    st.write('Akurasi model Naive Bayes: {0:0.0f}%'.format(gaussian_akurasi))
+        scaler = MinMaxScaler()
+        scaled_X = scaler.fit_transform(X)
+        scaled_df = pd.DataFrame(scaled_X, columns=X.columns)
 
-            grafik = st.form_submit_button("Grafik akurasi semua model")
-            if grafik:
-                data = pd.DataFrame({
-                    'Akurasi': [gaussian_akurasi],
-                    'Model': ['Gaussian Naive Bayes'],
-                })
+        X_train, X_test, y_train, y_test = train_test_split(scaled_df, y, test_size=0.2, random_state=1)
 
-                bar_chart = px.bar(data, 
-                    x='Model', 
-                    y='Akurasi',
-                    text='Akurasi',
-                    color_discrete_sequence =['#FF4B4B']*len(data),
-                    width=680)
-                st.plotly_chart(bar_chart)
+        gaussian = GaussianNB()
+        gaussian.fit(X_train, y_train)
+        y_pred = gaussian.predict(X_test)
+        accuracy = accuracy_score(y_test, y_pred)
 
-    elif selected == "Implementation":
-        with st.form("Implementation"):
-            df = pd.read_csv('https://raw.githubusercontent.com/BojayJaya/Project-Akhir-Kecerdasan-Bisnis-Kelompok-7/main/data.csv')
+        st.subheader('Hasil Modeling dengan Naive Bayes')
+        st.write('Akurasi: {:.2f}%'.format(accuracy * 100))
 
-            X = df.drop(columns=['Status'])
-            y = df['Status'].values
-            
-            scaler = MinMaxScaler()
-            scaled = scaler.fit_transform(X)
-            features_names = X.columns.copy()
-            scaled_features = pd.DataFrame(scaled, columns=features_names)
+    elif selected == 'Implementation':
+        st.subheader('Implementasi Prediksi Penyakit Diabetes')
+        df = pd.read_csv('data.csv')  # Ganti dengan nama file dataset Anda
 
-            training, test = train_test_split(scaled_features,test_size=0.2, random_state=1)
-            training_label, test_label = train_test_split(y, test_size=0.2, random_state=1)
+        X = df.drop(columns=['Status'])
+        y = df['Status'].values
 
-            gaussian = GaussianNB()
-            gaussian = gaussian.fit(training, training_label)
-            probas = gaussian.predict_proba(test)
-            probas = probas[:,1]
-            probas = probas.round()
+        scaler = MinMaxScaler()
+        scaled_X = scaler.fit_transform(X)
+        scaled_df = pd.DataFrame(scaled_X, columns=X.columns)
 
-            st.subheader("Implementasi Prediksi Penyakit Diabetes")
-            nama = st.number_input('Masukkan nama:')
-            jenist_inggal = st.number_input('Masukkan jenis jinggal:')
-            jenjang_pendidikan_ortu_wali = st.number_input('Masukkan jenis pendidikan ortu atau wali:')
-            pekerjaan_ortu_wali = st.number_input('Masukkan pekerjaan ortu atau wali:')
-            penghasilan_ortu_wali = st.number_input('Masukkan penghasilan ortu atau wali:')
-            model = st.selectbox('Pilih model untuk melakukan prediksi:', ('Gaussian Naive Bayes'))
+        X_train, X_test, y_train, y_test = train_test_split(scaled_df, y, test_size=0.2, random_state=1)
 
-            prediksi = st.form_submit_button("Submit")
-            if prediksi:
-                inputs = np.array([
-                    nama,
-                    jenist_inggal,
-                    jenjang_pendidikan_ortu_wali,
-                    pekerjaan_ortu_wali,
-                    penghasilan_ortu_wali
-                ])
+        gaussian = GaussianNB()
+        gaussian.fit(X_train, y_train)
 
-                df_min = X.min()
-                df_max = X.max()
-                input_norm = ((inputs - df_min) / (df_max - df_min))
-                input_norm = np.array(input_norm).reshape(1, -1)
+        nama = st.number_input('Masukkan nama:')
+        jenis_tinggal = st.number_input('Masukkan jenis tinggal:')
+        jenjang_pendidikan_ortu_wali = st.number_input('Masukkan jenjang pendidikan ortu atau wali:')
+        pekerjaan_ortu_wali = st.number_input('Masukkan pekerjaan ortu atau wali:')
+        penghasilan_ortu_wali = st.number_input('Masukkan penghasilan ortu atau wali:')
+        
+        input_data = np.array([
+            nama,
+            jenis_tinggal,
+            jenjang_pendidikan_ortu_wali,
+            pekerjaan_ortu_wali,
+            penghasilan_ortu_wali
+        ]).reshape(1, -1)
 
-                if model == 'Gaussian Naive Bayes':
-                    mod = gaussian
-                    akurasi = round(100 * accuracy_score(test_label,probas))
+        input_data_scaled = scaler.transform(input_data)
 
-                input_pred = mod.predict(input_norm)
+        prediction = gaussian.predict(input_data_scaled)
 
-                st.subheader('Hasil Prediksi')
-                st.write('Menggunakan Pemodelan:', model)
-                st.write('Akurasi: {0:0.0f}%'.format(akurasi))
-                st.write('Hasil Prediksi:', input_pred[0])
+        st.subheader('Hasil Prediksi')
+        st.write('Klasifikasi:', prediction[0])
