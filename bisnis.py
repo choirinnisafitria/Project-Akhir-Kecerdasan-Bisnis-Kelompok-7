@@ -24,7 +24,7 @@ st.write("""<h1>Aplikasi Klasifikasi Penerima PIP dan KIP</h1>""",unsafe_allow_h
 with st.container():
     with st.sidebar:
         selected = option_menu(
-        st.write("""<h3 style = "text-align: center;"><img src="https://lh3.googleusercontent.com/a/ALm5wu2PukBXPMX88VuehLVmYvtTCLj1-XFDgkoky1-JBg=s192-c-rg-br100" width="90" height="90"><br> Kecerdasan Bisnis <p> Kelompok 7 </p></h3>""",unsafe_allow_html=True), 
+        st.write("""<h3 style = "text-align: center;"><img src="" width="90" height="90"><br> Kecerdasan Bisnis A <p> Kelompok 7 </p></h3>""",unsafe_allow_html=True), 
         ["Prepocessing", "Modeling", "Implementation"], 
             icons=['gear', 'arrow-down-square', 'check2-square'], menu_icon="cast", default_index=0,
             styles={
