@@ -132,28 +132,3 @@ with st.container():
         st.write("1. Hambali Fitrianto - 200411100074")
         st.write("2. Firdatul Fitriyah - 200411100020")
         st.write("3. Choirinnisa’ Fitria - 200411100149")
-        
-
-
-# Preprocessing data
-# Mendefinisikan Variable X dan Y
-X = df[['Jenis_Tinggal', 'Jenis_Pendidikan_Ortu_Wali', 'Pekerjaan_Ortu_Wali', 'Penghasilan_Ortu_Wali']]
-y = df['Status'].values
-
-# One-hot encoding pada atribut kategorikal
-encoder = OneHotEncoder(handle_unknown='ignore')
-X_encoded = encoder.fit_transform(X.astype(str)).toarray()
-feature_names = encoder.get_feature_names_out(input_features=X.columns)
-scaled_features = pd.DataFrame(X_encoded, columns=feature_names)
-
-# Min-max scaling pada data numerik
-numeric_cols = ['Penghasilan_Ortu_Wali']
-scaler = MinMaxScaler()
-scaled_features[numeric_cols] = scaler.fit_transform(df[numeric_cols])
-
-# Label encoding pada target variable
-label_encoder = LabelEncoder()
-y_encoded = label_encoder.fit_transform(y)
-
-# Split Data
-training, test, training_label, test_label = train_test_split(scaled_features, y_encoded, test_size=0.2, random_state=42)
