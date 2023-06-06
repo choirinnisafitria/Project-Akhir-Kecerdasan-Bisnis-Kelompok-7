@@ -22,7 +22,7 @@ st.set_page_config(
     }
 )
 st.write("""
-<center><h3 style = "text-align: justify;">KLASIFIKASI PENERIMA BANTUAN PIP DAN KIP SD NEGERI LOMBANG DAJAH 1 MENGGUNAKAN METODE NAIVE BAYES </h3></center>
+<center><h2 style = "text-align: justify;">KLASIFIKASI PENERIMA BANTUAN PIP DAN KIP SD NEGERI LOMBANG DAJAH 1 MENGGUNAKAN METODE NAIVE BAYES</h2></center>
 """,unsafe_allow_html=True)
 st.write("### Dosen Pengampu : Eka Mala Sari Rochman, S.Kom., M.Kom.",unsafe_allow_html=True)
 
@@ -72,12 +72,17 @@ with st.container():
         feature_names = encoder.get_feature_names_out(input_features=X.columns)
         scaled_features = pd.DataFrame(X_encoded, columns=feature_names)
 
+        # Min-max scaling pada data numerik
+        numeric_cols = ['Penghasilan_Ortu_Wali']
+        scaler = MinMaxScaler()
+        scaled_features[numeric_cols] = scaler.fit_transform(df[numeric_cols])
+
         # Label encoding pada target variable
         label_encoder = LabelEncoder()
         y_encoded = label_encoder.fit_transform(y)
 
         # Split Data
-        training, test, training_label, test_label = train_test_split(scaled_features, y_encoded, test_size=0.1, random_state=42)
+        training, test, training_label, test_label = train_test_split(scaled_features, y_encoded, test_size=0.2, random_state=42)
 
         # Gaussian Naive Bayes
         gaussian = GaussianNB()
@@ -127,9 +132,8 @@ with st.container():
                 st.success('KIP')
 
     elif selected == "Tentang Kami":
-        st.write("##### Mata Kuliah = Kecerdasan Bisnis -A") 
-        st.write('##### Kelompok 7')
+        st.write("##### Mata Kuliah = Pemrosesan Bahasa Alami -A") 
+        st.write('##### Kelompok 5')
         st.write("1. Hambali Fitrianto - 200411100074")
         st.write("2. Firdatul Fitriyah - 200411100020")
         st.write("3. Choirinnisa’ Fitria - 200411100149")
-        
