@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import MinMaxScaler, OneHotEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from sklearn.naive_bayes import GaussianNB
@@ -40,16 +40,16 @@ with st.container():
         # One-hot encoding pada atribut kategorikal
         encoder = OneHotEncoder(handle_unknown='ignore')
         X_encoded = encoder.fit_transform(X.astype(str)).toarray()
-        features_names = encoder.get_feature_names_out(input_features=X.columns)
-        scaled_features = pd.DataFrame(X_encoded, columns=features_names)
+        feature_names = encoder.get_feature_names_out(input_features=X.columns)
+        scaled_features = pd.DataFrame(X_encoded, columns=feature_names)
 
-        # Split Data 
-        training, test = train_test_split(scaled_features, test_size=0.2, random_state=1)  # Nilai X training dan Nilai X testing
-        training_label, test_label = train_test_split(y, test_size=0.2, random_state=1)  # Nilai Y training dan Nilai Y testing
+        # Split Data
+        training, test, training_label, test_label = train_test_split(
+            scaled_features, y, test_size=0.2, random_state=1)
 
         # Gaussian Naive Bayes
         gaussian = GaussianNB()
-        gaussian = gaussian.fit(training, training_label)
+        gaussian.fit(training, training_label)
         probas = gaussian.predict_proba(test)
         probas = probas[:, 1]
         probas = probas.round()
@@ -78,13 +78,15 @@ with st.container():
 
         if model == 'Gaussian Naive Bayes':
             mod = gaussian
-            akurasi = round(100 * accuracy_score(test_label, probas))
 
         input_pred = mod.predict(inputs_encoded)
 
         st.subheader('Hasil Prediksi')
         st.write('Menggunakan Pemodelan:', model)
-        st.write('Akurasi: {0:0.0f}'.format(akurasi), '%')
+
+        if len(test_label) > 0:
+            akurasi = round(100 * accuracy_score(test_label, probas))
+            st.write('Akurasi: {0:0.0f}'.format(akurasi), '%')
 
         if input_pred == 1:
             st.error('PIP')
