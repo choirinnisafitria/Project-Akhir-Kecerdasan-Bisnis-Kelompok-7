@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from sklearn.preprocessing import MinMaxScaler, LabelEncoder, OneHotEncoder
+from sklearn.preprocessing import MinMaxScaler, OneHotEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from sklearn.naive_bayes import GaussianNB
@@ -43,7 +43,10 @@ with st.container():
         X_encoded = encoder.fit_transform(X).toarray()
         scaler = MinMaxScaler()
         scaled_X = scaler.fit_transform(X_encoded)
-        scaled_df = pd.DataFrame(scaled_X, columns=X.columns)
+
+        # Mengambil nama kolom hasil one-hot encoding
+        one_hot_columns = encoder.get_feature_names_out(X.columns)
+        scaled_df = pd.DataFrame(scaled_X, columns=one_hot_columns)
 
         X_train, X_test, y_train, y_test = train_test_split(scaled_df, y, test_size=0.2, random_state=1)
 
@@ -60,19 +63,18 @@ with st.container():
         else:
             # Mengubah input menjadi dataframe
             input_df = pd.DataFrame([input_data], columns=X.columns)
-            
+
             # Melakukan one-hot encoding pada input data
             input_encoded = encoder.transform(input_df).toarray()
-            
+
             # Melakukan normalisasi pada input data
             scaled_input = scaler.transform(input_encoded)
-            
+
             # Melakukan prediksi menggunakan model Gaussian Naive Bayes
             prediction = gaussian.predict(scaled_input)
-            
+
             # Mengembalikan hasil prediksi ke label asli menggunakan inverse transform
             predicted_label = encoder.inverse_transform(prediction)[0]
-            
+
             st.subheader('Hasil Prediksi')
             st.write('Prediksi: ', predicted_label)
-
