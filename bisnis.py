@@ -38,6 +38,8 @@ with st.container():
         X = df.drop(columns=['Status'])
         y = df['Status'].values
 
+        print("X shape:", X.shape)  # Print the shape of X
+
         scaler = MinMaxScaler()
         scaled_X = scaler.fit_transform(X.to_numpy())  # Convert DataFrame to NumPy array
         scaled_df = pd.DataFrame(scaled_X, columns=X.columns)
