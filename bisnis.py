@@ -63,7 +63,7 @@ with st.container():
         jenis_tinggal = st.text_input('Masukkan jenis tinggal:')
         jenis_pendidikan_ortu_wali = st.text_input('Masukkan jenis pendidikan ortu atau wali:')
         pekerjaan_ortu_wali = st.text_input('Masukkan pekerjaan ortu atau wali:')
-        penghasilan_ortu_wali = st.text_input('Masukkan penghasilan ortu atau wali:')
+        penghasilan_ortu_wali = st.number_input('Masukkan penghasilan ortu atau wali:', value=0)
         model = 'Gaussian Naive Bayes'  # Menggunakan model Gaussian Naive Bayes secara langsung
 
         if st.button('Submit'):
