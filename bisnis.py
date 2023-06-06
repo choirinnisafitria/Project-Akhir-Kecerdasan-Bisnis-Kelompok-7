@@ -49,8 +49,7 @@ with st.container():
         y_encoded = label_encoder.fit_transform(y)
 
         # Split Data
-        training, test, training_label, test_label = train_test_split(
-            scaled_features, y_encoded, test_size=0.2, random_state=1)
+        training, test, training_label, test_label = train_test_split(scaled_features, y_encoded, test_size=0.2, random_state=42)
 
         # Gaussian Naive Bayes
         gaussian = GaussianNB()
